@@ -3,4 +3,6 @@ project(untitled3)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(untitled3 main.cpp)
+add_executable(${PROJECT_NAME} main.cpp src/cartesian_tree.cpp)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
+

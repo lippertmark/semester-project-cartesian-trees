@@ -10,18 +10,21 @@ namespace assignment {
 
         void Split(Node* node, int key, Node*& left, Node*& right);
 
-        Node *Merge(Node* left_tree, Node* right_tree) const;
+        Node *Merge(Node* left_tree, Node* right_tree);
 
         void Insert(int key, int priority);
 
-        bool Contains(int key) const;
+        bool Contains(int key);
 
         bool Remove(int key);
 
         bool IsEmpty() const;
 
-        Node *root() const;
+        Node* root() const;
+
     private:
         Node *root_{nullptr};
+
+        void clear(Node* node);
     };
 }

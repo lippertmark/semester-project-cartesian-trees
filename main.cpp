@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "include/assignment/cartesian_tree.hpp"
 using namespace std;
 using namespace assignment;
@@ -15,6 +15,6 @@ int main(int args, char** argv){
     tree.Insert(7, 7);
     tree.Insert(14, 8);
     tree.Insert(13, 9);
-    // cout << tree;
+    //cout << tree;
     return 0;
 }

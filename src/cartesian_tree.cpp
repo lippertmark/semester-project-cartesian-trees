@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include "cartesian_tree.hpp"
+#include "assignment/cartesian_tree.hpp"
 
 namespace assignment{
     CartesianTree::~CartesianTree(){
@@ -17,7 +17,7 @@ namespace assignment{
         if (!node){
             left_tree = nullptr;
             right_tree = nullptr;
-            return
+            return;
         }
         else if (node->key <= key){
             Split(node->right, key, node->right, right_tree);
@@ -34,7 +34,7 @@ namespace assignment{
         if (left_tree == nullptr || right_tree == nullptr) {
             return left_tree == 0 ? right_tree : left_tree;
         }
-        if (left->priority > right->priority) {
+        if (left_tree->priority > right_tree->priority) {
             left_tree->right = Merge(left_tree->right, right_tree);
             return left_tree;
         }
@@ -43,28 +43,32 @@ namespace assignment{
     }
 
     void CartesianTree:: Insert(int key, int priority){
-        Node* left_tree, right_tree;
+        Node* left_tree;
+        Node *right_tree;
         Split(root_, key, left_tree, right_tree);
         left_tree = Merge(left_tree, new Node(key, priority));
         root_ = Merge(left_tree, right_tree);
     }
 
-    bool CartesianTree::Contains(int key) const {
-        Node* left_tree, equal, right_tree;
+    bool CartesianTree::Contains(int key) {
+        Node* left_tree;
+        Node* equal;
+        Node* right_tree;
         Split(root_, key, left_tree, right_tree);
-        Split(right_tree, key+1, equal, right_tree)
-        bool result = equel;
-        root_ = Merge(Merge(left_tree, equal), right_tree);
-        return equel;
+        Split(right_tree, key+1, equal, right_tree);
+        left_tree = Merge(left_tree, equal);
+        root_ = Merge(left_tree, right_tree);
+        return equal;
     }
 
-    bool Remove(int, key){
-        if (!root_){
+    bool Remove(int key){
+        if (! root_){
             return false;
         }
         Node* left_tree, equal, right_tree;
         Split(root_, key, left_tree, right_tree);
-        Split(right_tree, key+1, equal, right_tree);
+        key++;
+        Split(right_tree, key, equal, right_tree);
         root_ = Merge(left_tree, right_tree);
         return true;
     }
@@ -74,10 +78,13 @@ namespace assignment{
     }
 
     void CartesianTree::clear(Node* node) {
-        if (node!= nullptr) {
+        if (node != nullptr) {
             clear(node->left);
             clear(node->right);
         }
         delete node;
+    }
+    Node* CartesianTree::root() const {
+        return root_;
     }
 }
