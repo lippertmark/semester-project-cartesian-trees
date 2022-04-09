@@ -1,30 +1,50 @@
-#include <optional>
-#include "node.hpp"
-#pragma once
+#pragma once  // директива "pragma once" всегда записывается в самом начале заголовочного файла
+
+#include <ostream>   // ostream
+#include <optional>  // ???
+
+#include "node.hpp"  // Node
+
 namespace assignment {
-    struct CartesianTree final{
-        CartesianTree() = default;
-        ~CartesianTree();
 
-        void Clear();
+  struct CartesianTree final {
 
-        void Split(Node* node, int key, Node*& left, Node*& right);
+    // конструктор
+    CartesianTree() = default;
 
-        Node *Merge(Node* left_tree, Node* right_tree);
+    // деструктор
+    ~CartesianTree();
 
-        void Insert(int key, int priority);
+    void Clear();
 
-        bool Contains(int key);
+    void Split(Node* node, int key, Node*& left, Node*& right);
 
-        bool Remove(int key);
+    Node* Merge(Node* left_tree, Node* right_tree);
 
-        bool IsEmpty() const;
+    void Insert(int key, int priority);
 
-        Node* root() const;
+    bool Contains(int key);
 
-    private:
-        Node *root_{nullptr};
+    bool Remove(int key);
 
-        void clear(Node* node);
-    };
-}
+    bool IsEmpty() const;
+
+    Node* root() const;
+
+   private:
+    // корневой узел
+    Node* root_{nullptr};
+
+    void clear(Node* node);
+
+   public:
+    friend std::ostream& operator<<(std::ostream& os, const CartesianTree& tree);
+  };
+
+  // Можете реализовать оператор вывода << (os - поток вывода)
+  inline std::ostream& operator<<(std::ostream& os, const CartesianTree& tree) {
+    os << "Cartesian tree" << '\n';
+    return os;
+  }
+
+}  // namespace assignment
