@@ -1,90 +1,111 @@
-#pragma once
-#include <iostream>
-#include <algorithm>
-#include <cmath>
+#include <iostream>   // cout
+#include <algorithm>  // ???
+#include <cmath>      // ???
+
 #include "assignment/cartesian_tree.hpp"
 
-namespace assignment{
-    CartesianTree::~CartesianTree(){
-        CartesianTree::Clear();
+namespace assignment {
+
+  CartesianTree::~CartesianTree() {
+    CartesianTree::Clear();
+  }
+
+  void CartesianTree::Clear() {
+    clear(root_);
+    root_ = nullptr;
+  }
+
+  void CartesianTree::clear(Node* node) {
+    if (node != nullptr) {
+      clear(node->left);
+      clear(node->right);
     }
 
-    void CartesianTree::Clear(){
-        clear(root_);
-        root_ = nullptr;
-    }
-    void CartesianTree::Split(Node* node, int key, Node*& left_tree, Node*& right_tree){
-        if (!node){
-            left_tree = nullptr;
-            right_tree = nullptr;
-            return;
-        }
-        else if (node->key <= key){
-            Split(node->right, key, node->right, right_tree);
-            left_tree = node;
-        }
-        else {
-            Split(node->left, key, node->left, left_tree);
-            right_tree = node;
-        }
+    delete node;
+  }
+
+  void CartesianTree::Split(Node* node, int key, Node*& left_tree, Node*& right_tree) {
+
+    if (node == nullptr) {
+      left_tree = nullptr;
+      right_tree = nullptr;
+      return;
     }
 
-
-    Node* Merge(Node* left_tree, Node* right_tree) {
-        if (left_tree == nullptr || right_tree == nullptr) {
-            return left_tree == 0 ? right_tree : left_tree;
-        }
-        if (left_tree->priority > right_tree->priority) {
-            left_tree->right = Merge(left_tree->right, right_tree);
-            return left_tree;
-        }
-        right_tree->left = Merge(left_tree, right_tree->left);
-        return right_tree;
+    if (node->key <= key) {
+      Split(node->right, key, node->right, right_tree);
+      left_tree = node;
+    } else {
+      Split(node->left, key, node->left, left_tree);
+      right_tree = node;
     }
+  }
 
-    void CartesianTree:: Insert(int key, int priority){
-        Node* left_tree;
-        Node *right_tree;
-        Split(root_, key, left_tree, right_tree);
-        left_tree = Merge(left_tree, new Node(key, priority));
-        root_ = Merge(left_tree, right_tree);
+  Node* CartesianTree::Merge(Node* left_tree, Node* right_tree) {
+
+    if (left_tree == nullptr || right_tree == nullptr) {
+      return left_tree == nullptr ? right_tree : left_tree;
     }
 
-    bool CartesianTree::Contains(int key) {
-        Node* left_tree;
-        Node* equal;
-        Node* right_tree;
-        Split(root_, key, left_tree, right_tree);
-        Split(right_tree, key+1, equal, right_tree);
-        left_tree = Merge(left_tree, equal);
-        root_ = Merge(left_tree, right_tree);
-        return equal;
+    if (left_tree->priority > right_tree->priority) {
+      left_tree->right = Merge(left_tree->right, right_tree);
+      return left_tree;
     }
 
-    bool Remove(int key){
-        if (! root_){
-            return false;
-        }
-        Node* left_tree, equal, right_tree;
-        Split(root_, key, left_tree, right_tree);
-        key++;
-        Split(right_tree, key, equal, right_tree);
-        root_ = Merge(left_tree, right_tree);
-        return true;
+    right_tree->left = Merge(left_tree, right_tree->left);
+
+    return right_tree;
+  }
+
+  void CartesianTree::Insert(int key, int priority) {
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+
+    Split(root_, key, left_tree, right_tree);
+
+    left_tree = Merge(left_tree, new Node(key, priority));
+    root_ = Merge(left_tree, right_tree);
+  }
+
+  bool CartesianTree::Contains(int key) {
+    Node* equal = nullptr;
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+
+    Split(root_, key, left_tree, right_tree);
+    Split(right_tree, key + 1, equal, right_tree);
+
+    left_tree = Merge(left_tree, equal);
+    root_ = Merge(left_tree, right_tree);
+
+    return equal;  // ??? equal != nullptr
+  }
+
+  bool CartesianTree::Remove(int key) {
+
+    if (root_ == nullptr) {
+      return false;
     }
 
-    bool CartesianTree::IsEmpty() const {
-        return root_ == nullptr;
-    }
+    Node* equal;
+    Node* left_tree;
+    Node* right_tree;
 
-    void CartesianTree::clear(Node* node) {
-        if (node != nullptr) {
-            clear(node->left);
-            clear(node->right);
-        }
-        delete node;
-    }
-    Node* CartesianTree::root() const {
-        return root_;
-    }
-}
+    Split(root_, key, left_tree, right_tree);
+    key++;
+    Split(right_tree, key, equal, right_tree);
+
+    root_ = Merge(left_tree, right_tree);
+
+    return true;
+  }
+
+  bool CartesianTree::IsEmpty() const {
+    return root_ == nullptr;
+  }
+
+  Node* CartesianTree::root() const {
+    return root_;
+  }
+
+}  // namespace assignment

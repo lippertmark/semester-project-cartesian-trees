@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 3.20)
-project(untitled3)
 
-set(CMAKE_CXX_STANDARD 14)
+# Примечание: придумайте нормальное название проекту (как это указано в Google таблице)
+project(untitled3 CXX)
 
-add_executable(${PROJECT_NAME} main.cpp src/cartesian_tree.cpp)
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_executable(${PROJECT_NAME} main.cpp)
+
+# Здесь указываются пути до конкретных исходных файлов (через пробел).
+# Указанные исходные файлы войдут в состав исполняемого файла.
+target_sources(${PROJECT_NAME} PRIVATE src/cartesian_tree.cpp)
+
+# Подключение заголовочных файлов.
+# Для подключения собственных заголовочных в любом месте используйте путь <assignment/...>.
+target_include_directories(${PROJECT_NAME} PUBLIC include)
