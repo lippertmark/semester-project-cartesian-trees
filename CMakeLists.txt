@@ -12,12 +12,17 @@ option(BUILD_TESTS "Build assignment tests." ON)
 include(CMakePrintHelpers)
 cmake_print_variables(CMAKE_BUILD_TYPE BUILD_TESTS)
 
+# статическая библиотека
+add_library(${PROJECT_NAME}_lib STATIC src/cartesian_tree.cpp)
+target_include_directories(${PROJECT_NAME}_lib PUBLIC include)
+
+# исполняемый файл
 add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib)
 
-# Здесь указываются пути до конкретных исходных файлов (через пробел).
-# Указанные исходные файлы войдут в состав исполняемого файла.
-target_sources(${PROJECT_NAME} PRIVATE src/cartesian_tree.cpp)
-
-# Подключение заголовочных файлов.
-# Для подключения собственных заголовочных в любом месте используйте путь <assignment/...>.
-target_include_directories(${PROJECT_NAME} PUBLIC include)
+# Tests
+if (BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(contrib)
+    add_subdirectory(tests)
+endif (BUILD_TESTS)
