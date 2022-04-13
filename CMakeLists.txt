@@ -4,7 +4,13 @@ cmake_minimum_required(VERSION 3.20)
 project(untitled3 CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+option(BUILD_TESTS "Build assignment tests." ON)
+
+include(CMakePrintHelpers)
+cmake_print_variables(CMAKE_BUILD_TYPE BUILD_TESTS)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
