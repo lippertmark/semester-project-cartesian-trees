@@ -78,7 +78,7 @@ namespace assignment {
     left_tree = Merge(left_tree, equal);
     root_ = Merge(left_tree, right_tree);
 
-    return equal;  // ??? equal != nullptr
+    return equal != nullptr;  // ??? equal != nullptr
   }
 
   bool CartesianTree::Remove(int key) {
