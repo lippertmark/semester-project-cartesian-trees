@@ -50,7 +50,27 @@ TEST_CASE("CartesianTree::Clear") {
 }
 
 TEST_CASE("CartesianTree::Split") {
+  CartesianTree tree;
 
+  const auto keys = std::vector<int>{8, 3, 10, 1, 6, 14, 4, 7, 13};
+  const auto values = std::vector<int>{0, 1, 2, 3, 4, 6, 9, 10, 13};
+  const auto keys_less = std::vector<int>{1, 3, 4};
+  const auto keys_other = std::vector<int>{6, 7, 8, 10, 13, 14};
+  for (int index = 0; index < keys.size(); ++index) {
+    tree.Insert(keys[index], values[index]);
+  }
+
+  SECTION("split node with two children") {
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+    tree.Split(tree, 6,left_tree, right_tree);
+    for (int key : keys_less) {
+      CHECK_FALSE(left_tree.Contains(key));
+    }
+  }
+  SECTION("split the extreme node") {
+
+  }
 }
 
 TEST_CASE("CartesianTree::Merge") {
