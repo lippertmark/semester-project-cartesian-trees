@@ -31,6 +31,8 @@ namespace assignment {
 
     Node* root() const;
 
+    Node* find(int key, Node* node);
+
    private:
     // корневой узел
     Node* root_{nullptr};
