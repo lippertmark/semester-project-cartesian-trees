@@ -63,7 +63,7 @@ TEST_CASE("CartesianTree::Split") {
   SECTION("split node with two children") {
     Node* left_tree = nullptr;
     Node* right_tree = nullptr;
-    tree.Split(tree, 6,left_tree, right_tree);
+    tree.Split(tree.root_, 6,left_tree, right_tree);
     for (int key : keys_less) {
       CHECK_FALSE(left_tree.Contains(key));
     }
