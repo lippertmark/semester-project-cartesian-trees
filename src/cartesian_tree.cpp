@@ -58,13 +58,19 @@ namespace assignment {
   }
 
   void CartesianTree::Insert(int key, int priority) {
-    Node* left_tree = nullptr;
-    Node* right_tree = nullptr;
+    if (!root_){
+      Node* newNode = new Node(key, priority);
+      root_ = newNode;
+    }
+    else {
+      Node* left_tree = nullptr;
+      Node* right_tree = nullptr;
 
-    Split(root_, key, left_tree, right_tree);
+      Split(root_, key, left_tree, right_tree);
 
-    left_tree = Merge(left_tree, new Node(key, priority));
-    root_ = Merge(left_tree, right_tree);
+      left_tree = Merge(left_tree, new Node(key, priority));
+      root_ = Merge(left_tree, right_tree);
+    }
   }
 
   bool CartesianTree::Contains(int key) {
@@ -74,11 +80,11 @@ namespace assignment {
 
     Split(root_, key, left_tree, right_tree);
     Split(right_tree, key + 1, equal, right_tree);
-
+    bool result = equal;
     left_tree = Merge(left_tree, equal);
     root_ = Merge(left_tree, right_tree);
 
-    return equal;  // ??? equal != nullptr
+    return result;
   }
 
   bool CartesianTree::Remove(int key) {
