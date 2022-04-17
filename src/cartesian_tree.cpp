@@ -29,14 +29,13 @@ namespace assignment {
     if (node == nullptr) {
       left_tree = nullptr;
       right_tree = nullptr;
-      return;
     }
 
-    if (node->key <= key) {
+    else if (node->key <= key) {
       Split(node->right, key, node->right, right_tree);
       left_tree = node;
     } else {
-      Split(node->left, key, node->left, left_tree);
+      Split(node->left, key, left_tree, node->left);
       right_tree = node;
     }
   }
@@ -58,27 +57,28 @@ namespace assignment {
   }
 
   void CartesianTree::Insert(int key, int priority) {
-    Node* left_tree = nullptr;
-    Node* right_tree = nullptr;
+    if (!root_){
+      Node* newNode = new Node(key, priority);
+      root_ = newNode;
+    }
+    else {
+      Node* left_tree = nullptr;
+      Node* right_tree = nullptr;
 
-    Split(root_, key, left_tree, right_tree);
+      Split(root_, key, left_tree, right_tree);
 
-    left_tree = Merge(left_tree, new Node(key, priority));
-    root_ = Merge(left_tree, right_tree);
+      left_tree = Merge(left_tree, new Node(key, priority));
+      root_ = Merge(left_tree, right_tree);
+    }
   }
 
+
   bool CartesianTree::Contains(int key) {
-    Node* equal = nullptr;
-    Node* left_tree = nullptr;
-    Node* right_tree = nullptr;
-
-    Split(root_, key, left_tree, right_tree);
-    Split(right_tree, key + 1, equal, right_tree);
-
-    left_tree = Merge(left_tree, equal);
-    root_ = Merge(left_tree, right_tree);
-
-    return equal != nullptr;  // ??? equal != nullptr
+    Node* curr = find(key, root_);
+    if (curr == nullptr){
+      return false;
+    }
+    return true;
   }
 
   bool CartesianTree::Remove(int key) {
@@ -106,6 +106,21 @@ namespace assignment {
 
   Node* CartesianTree::root() const {
     return root_;
+  }
+
+  Node* CartesianTree::find(int key, Node* node){
+    if (node==nullptr){
+      return nullptr;
+    }
+    if (node->key == key){
+      return node;
+    }
+    if (node->key > key){
+      return find(key, node->left);
+    }
+    if (node->key < key){
+      return find(key, node->right);
+    }
   }
 
 }  // namespace assignment
