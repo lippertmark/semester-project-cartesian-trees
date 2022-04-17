@@ -63,7 +63,7 @@ TEST_CASE("CartesianTree::Insert") {
   REQUIRE(tree.IsEmpty());
 
   // 0
-  tree.Insert(8, 0);
+  tree.Insert(7, 10);
 
   CHECK_FALSE(tree.IsEmpty());
 
@@ -71,88 +71,110 @@ TEST_CASE("CartesianTree::Insert") {
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 8, 0);
+  check_key_value(check_node, 7, 10);
 
   // 1
-  tree.Insert(3, 1);
+  tree.Insert(4, 6);
 
   check_node = tree.root()->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 3, 1);
+  check_key_value(check_node, 4, 6);
 
   // 2
-  tree.Insert(10, 2);
+  tree.Insert(13, 8);
 
   check_node = tree.root()->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 10, 2);
+  check_key_value(check_node, 13, 8);
 
   // 3
-  tree.Insert(1, 3);
+  tree.Insert(2, 4);
 
   check_node = tree.root()->left->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 1, 3);
+  check_key_value(check_node, 2, 4);
 
   // 4
-  tree.Insert(6, 4);
+  tree.Insert(6, 2);
 
   check_node = tree.root()->left->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 6, 4);
+  check_key_value(check_node, 6, 2);
+
+  // 5
+  tree.Insert(9, 7);
+
+  check_node = tree.root()->right->left;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 9, 7);
 
   // 6
-  tree.Insert(14, 6);
+  tree.Insert(14, 4);
 
   check_node = tree.root()->right->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 14, 6);
+  check_key_value(check_node, 14, 4);
+
+  // 7
+  tree.Insert(0, 3);
+
+  check_node = tree.root()->left->left->left;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 0, 3);
+
+  // 8
+  tree.Insert(3, 3);
+
+  check_node = tree.root()->left->left->right;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 3, 3);
 
   // 9
-  tree.Insert(4, 9);
+  tree.Insert(5, 1);
 
   check_node = tree.root()->left->right->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 4, 9);
+  check_key_value(check_node, 5, 1);
 
   // 10
-  tree.Insert(7, 10);
+  tree.Insert(11, 3);
 
-  check_node = tree.root()->left->right->right;
-
-  REQUIRE(check_node != nullptr);
-  check_children_null(check_node);
-  check_key_value(check_node, 7, 10);
-
-  // 13
-  tree.Insert(13, 13);
-
-  check_node = tree.root()->right->right->left;
+  check_node = tree.root()->right->left->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 13, 13);
+  check_key_value(check_node, 11, 3);
+
+
+
 
   // check nullptr nodes
-  CHECK(tree.root()->right->left == nullptr);
+  CHECK(tree.root()->left->right->right == nullptr);
+  CHECK(tree.root()->right->left->left == nullptr);
+  CHECK(tree.root()->right->right->left == nullptr);
   CHECK(tree.root()->right->right->right == nullptr);
-  check_children_null(tree.root()->left->left);
 
   // check tree's string representation (BFS)
   const auto tree_str = utils::tree_as_str(tree.root());
-  CHECK_THAT(tree_str, Contains("8 3 10 1 6 14 4 7 13"));
+  CHECK_THAT(tree_str, Contains("7 4 13 2 6 9 14 0 3 5 11"));
 }
 
 TEST_CASE("CartesianTree::Contains") {
