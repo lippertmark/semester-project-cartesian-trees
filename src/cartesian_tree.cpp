@@ -29,14 +29,13 @@ namespace assignment {
     if (node == nullptr) {
       left_tree = nullptr;
       right_tree = nullptr;
-      return;
     }
 
-    if (node->key <= key) {
+    else if (node->key <= key) {
       Split(node->right, key, node->right, right_tree);
       left_tree = node;
     } else {
-      Split(node->left, key, node->left, left_tree);
+      Split(node->left, key, left_tree, node->left);
       right_tree = node;
     }
   }

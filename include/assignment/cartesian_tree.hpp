@@ -41,6 +41,7 @@ namespace assignment {
 
    public:
     friend std::ostream& operator<<(std::ostream& os, const CartesianTree& tree);
+    Node* find(int key, Node* node);
   };
 
   // Можете реализовать оператор вывода << (os - поток вывода)
