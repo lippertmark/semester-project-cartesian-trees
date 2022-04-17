@@ -86,17 +86,12 @@ namespace assignment {
     if (root_ == nullptr) {
       return false;
     }
-
-    Node* equal;
     Node* left_tree;
     Node* right_tree;
-
+    Node* new_node = find(key, root_);
     Split(root_, key, left_tree, right_tree);
-    key++;
-    Split(right_tree, key, equal, right_tree);
-
+    left_tree = left_tree->left;
     root_ = Merge(left_tree, right_tree);
-
     return true;
   }
 
