@@ -58,7 +58,7 @@ TEST_CASE("CartesianTree:Split") {
     tree.Insert(keys[index], values[index]);
   }
 
-  SECTION("split node with two children") {
+  SECTION("split node, check right_tree") {
     Node* left_tree = nullptr;
     Node* right_tree = nullptr;
     tree.Split(tree.root(), 6,left_tree, right_tree);
@@ -67,10 +67,17 @@ TEST_CASE("CartesianTree:Split") {
     const auto right_tree1 = utils::tree_as_str(right_tree);
     CHECK_THAT(right_tree1, Contains("13 7 14 10 8"));
   }
+  SECTION("split node, check left_tree") {
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+    tree.Split(tree.root(), 6,left_tree, right_tree);
+    //    const auto left_tree1 = utils::tree_as_str(left_tree);
+    //    CHECK_THAT(left_tree1, Contains("4 1 6 3"));
+    const auto left_tree1 = utils::tree_as_str(left_tree);
+    CHECK_THAT(left_tree1, Contains("4 1 6 3"));
+  }
 }
-   SECTION("split the extreme node") {
 
-   }
 
 
 TEST_CASE("CartesianTree::Merge") {
