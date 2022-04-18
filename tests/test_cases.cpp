@@ -49,10 +49,6 @@ TEST_CASE("CartesianTree::Clear") {
   CHECK(tree.root() == nullptr);
 }
 
-TEST_CASE("CartesianTree::Split") {
-
-}
-
 TEST_CASE("CartesianTree::Merge") {
 
 }
@@ -204,11 +200,11 @@ TEST_CASE("CartesianTree::Contains") {
   }
 }
 
-TEST_CASE("CertasianTree::Remove") {
+TEST_CASE("CartesianTree::Remove") {
   CartesianTree tree;
 
-  auto keys = std::vector<int>{8, 3, 10, 1, 6, 14, 4, 7, 13};
-  const auto values = std::vector<int>{0, 1, 2, 3, 4, 6, 9, 10, 13};
+  auto keys = std::vector<int>{7, 4, 13, 2, 6, 9, 14, 0, 3, 5, 11};
+  const auto values = std::vector<int>{10, 6, 8, 4, 2, 7, 4, 3, 3, 1, 3};
 
   for (int index = 0; index < keys.size(); ++index) {
     tree.Insert(keys[index], values[index]);
@@ -218,7 +214,7 @@ TEST_CASE("CertasianTree::Remove") {
   REQUIRE(tree.root() != nullptr);
 
   SECTION("remove nodes with no children") {
-    const int remove_key = GENERATE(1, 4, 7, 13);
+    const int remove_key = GENERATE(3, 5, 11, 14);
 
     keys.erase(std::remove(keys.begin(), keys.end(), remove_key), keys.end());
 
@@ -241,25 +237,61 @@ TEST_CASE("CertasianTree::Remove") {
   SECTION("remove nodes with one child") {
 
     SECTION("remove node with left child") {
-      const int remove_key = 14;
+      const int remove_key = 6;
 
       CHECK(tree.Remove(remove_key));
       CHECK_FALSE(tree.Contains(remove_key));
 
       // check tree's string representation (BFS)
       const auto tree_str = utils::tree_as_str(tree.root());
-      CHECK_THAT(tree_str, Contains("8 3 10 1 6 13 4 7"));
+      CHECK_THAT(tree_str, Contains("7 4 13 2 5 9 14 0 3 11"));
     }
 
     SECTION("remove node with right child") {
-      const int remove_key = 10;
+      const int remove_key = 9;
 
       CHECK(tree.Remove(remove_key));
       CHECK_FALSE(tree.Contains(remove_key));
 
       // check tree's string representation (BFS)
       const auto tree_str = utils::tree_as_str(tree.root());
-      CHECK_THAT(tree_str, Contains("8 3 14 1 6 13 4 7"));
+      CHECK_THAT(tree_str, Contains("7 4 13 2 6 11 14 0 3 5"));
+    }
+  }
+
+  SECTION("remove node with 2 children") {
+
+    SECTION("remove node 4") {
+      const int remove_key = 4;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("7 2 13 0 3 9 14 6 11 5"));
+    }
+
+    SECTION("remove node 13") {
+      const int remove_key = 13;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("7 4 9 2 6 14 0 3 5 11"));
+    }
+
+    SECTION("remove node 7") {
+      const int remove_key = 7;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("13 9 14 4 11 2 6 0 3 5"));
     }
   }
 }
