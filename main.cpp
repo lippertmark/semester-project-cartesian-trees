@@ -9,23 +9,24 @@ using namespace assignment;
 
 int main(int args, char** argv) {
 
-  CartesianTree tree;
-  CartesianTree tree88;
+  CartesianTree left_tree;
+  CartesianTree right_tree;
+  const auto keys_l = std::vector<int>{4, 1, 6, 3};
+  const auto values_l = std::vector<int>{9, 3, 4, 1};
+  for (int index = 0; index < keys_l.size(); ++index) {
+    left_tree.Insert(keys_l[index], values_l[index]);
+  }
+  const auto keys_r = std::vector<int>{13, 7, 14, 10, 8};
+  const auto values_r = std::vector<int>{13, 10, 6, 2, 0};
+  for (int index = 0; index < keys_r.size(); ++index) {
+    right_tree.Insert(keys_r[index], values_r[index]);
+  }
+  right_tree.Merge(left_tree.root(), right_tree.root());
+  const auto right_tree1 = utils::tree_as_str(right_tree.root());
+  cout << right_tree1<<'\n';
+  return 0;
+  }
 
-  tree.Insert(7, 10);
-  tree.Insert(4, 6);
-  tree.Insert(13, 8);
-  tree.Insert(2, 4);
-  tree.Insert(6, 2);
-  tree.Insert(9, 7);
-  tree.Insert(14, 4);
-  tree.Insert(0, 3);
-  tree.Insert(3, 3);
-  tree.Insert(5, 1);
-  tree.Insert(11, 3);
-
-  const auto tree_str11 = utils::tree_as_str(tree.root());
-  cout << tree_str11<<'\n';
 
   /*
    *               7
@@ -35,13 +36,3 @@ int main(int args, char** argv) {
    *
    * x - это nullptr
    */
-  tree.Remove(7);
-
-  const auto tree_str12 = utils::tree_as_str(tree.root());
-  cout << tree_str12<<'\n';
-
-
-
-
-  return 0;
-}

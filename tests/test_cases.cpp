@@ -57,7 +57,8 @@ TEST_CASE("CartesianTree:Split") {
   for (int index = 0; index < keys.size(); ++index) {
     tree.Insert(keys[index], values[index]);
   }
-
+  REQUIRE_FALSE(tree.IsEmpty());
+  REQUIRE(tree.root() != nullptr);
   SECTION("split node, check right_tree") {
     Node* left_tree = nullptr;
     Node* right_tree = nullptr;
@@ -81,8 +82,26 @@ TEST_CASE("CartesianTree:Split") {
 
 
 TEST_CASE("CartesianTree::Merge") {
+  CartesianTree left_tree;
+  CartesianTree right_tree;
+  const auto keys_l = std::vector<int>{4, 1, 6, 3};
+  const auto values_l = std::vector<int>{9, 3, 4, 1};
+  for (int index = 0; index < keys_l.size(); ++index) {
+    left_tree.Insert(keys_l[index], values_l[index]);
   }
-
+  const auto keys_r = std::vector<int>{13, 7, 14, 10, 8};
+  const auto values_r = std::vector<int>{13, 10, 6, 2, 0};
+  for (int index = 0; index < keys_r.size(); ++index) {
+    right_tree.Insert(keys_r[index], values_r[index]);
+  }
+  SECTION("merge trees") {
+    right_tree.Merge(left_tree.root(), right_tree.root());
+    REQUIRE_FALSE(right_tree.IsEmpty());
+    REQUIRE(right_tree.root() != nullptr);
+    const auto right_tree1 = utils::tree_as_str(right_tree.root());
+    CHECK_THAT(right_tree1, Contains("13 7 14 4 10 1 6 8 3"));
+  }
+}
 
 TEST_CASE("CartesianTree::Insert") {
   CartesianTree tree;
