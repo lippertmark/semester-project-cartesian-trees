@@ -82,17 +82,8 @@ namespace assignment {
   }
 
   bool CartesianTree::Remove(int key) {
-
-    if (root_ == nullptr) {
-      return false;
-    }
-    Node* left_tree;
-    Node* right_tree;
-    Node* new_node = find(key, root_);
-    Split(root_, key, left_tree, right_tree);
-    left_tree = left_tree->left;
-    root_ = Merge(left_tree, right_tree);
-    return true;
+    root_ = remove(root_, key);
+    return root_;
   }
 
   bool CartesianTree::IsEmpty() const {
@@ -116,6 +107,23 @@ namespace assignment {
     if (node->key < key){
       return find(key, node->right);
     }
+  }
+
+  Node* CartesianTree::remove(Node* node, int key){
+    if (node == nullptr){
+      return nullptr;
+    }
+    if (node->key == key){
+      node = Merge(node->left, node->right);
+    }
+
+    else if (key < node->key){
+      node->left = remove(node->left, key);
+    }
+    else {
+      node->right = remove(node->right, key);
+    }
+    return node;
   }
 
 }  // namespace assignment
