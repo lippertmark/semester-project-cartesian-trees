@@ -49,9 +49,33 @@ TEST_CASE("CartesianTree::Clear") {
   CHECK(tree.root() == nullptr);
 }
 
-TEST_CASE("CartesianTree::Merge") {
+TEST_CASE("CartesianTree:Split") {
+  CartesianTree tree;
 
+  const auto keys = std::vector<int>{8, 3, 10, 1, 6, 14, 4, 7, 13};
+  const auto values = std::vector<int>{0, 1, 2, 3, 4, 6, 9, 10, 13};
+  for (int index = 0; index < keys.size(); ++index) {
+    tree.Insert(keys[index], values[index]);
+  }
+
+  SECTION("split node with two children") {
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+    tree.Split(tree.root(), 6,left_tree, right_tree);
+//    const auto left_tree1 = utils::tree_as_str(left_tree);
+//    CHECK_THAT(left_tree1, Contains("4 1 6 3"));
+    const auto right_tree1 = utils::tree_as_str(right_tree);
+    CHECK_THAT(right_tree1, Contains("13 7 14 10 8"));
+  }
 }
+   SECTION("split the extreme node") {
+
+   }
+
+
+TEST_CASE("CartesianTree::Merge") {
+  }
+
 
 TEST_CASE("CartesianTree::Insert") {
   CartesianTree tree;
