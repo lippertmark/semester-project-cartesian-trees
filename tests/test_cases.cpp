@@ -49,13 +49,33 @@ TEST_CASE("CartesianTree::Clear") {
   CHECK(tree.root() == nullptr);
 }
 
-TEST_CASE("CartesianTree::Split") {
+TEST_CASE("CartesianTree:Split") {
+  CartesianTree tree;
 
+  const auto keys = std::vector<int>{8, 3, 10, 1, 6, 14, 4, 7, 13};
+  const auto values = std::vector<int>{0, 1, 2, 3, 4, 6, 9, 10, 13};
+  for (int index = 0; index < keys.size(); ++index) {
+    tree.Insert(keys[index], values[index]);
+  }
+
+  SECTION("split node with two children") {
+    Node* left_tree = nullptr;
+    Node* right_tree = nullptr;
+    tree.Split(tree.root(), 6,left_tree, right_tree);
+//    const auto left_tree1 = utils::tree_as_str(left_tree);
+//    CHECK_THAT(left_tree1, Contains("4 1 6 3"));
+    const auto right_tree1 = utils::tree_as_str(right_tree);
+    CHECK_THAT(right_tree1, Contains("13 7 14 10 8"));
+  }
 }
+   SECTION("split the extreme node") {
+
+   }
+
 
 TEST_CASE("CartesianTree::Merge") {
+  }
 
-}
 
 TEST_CASE("CartesianTree::Insert") {
   CartesianTree tree;
@@ -63,7 +83,7 @@ TEST_CASE("CartesianTree::Insert") {
   REQUIRE(tree.IsEmpty());
 
   // 0
-  tree.Insert(8, 0);
+  tree.Insert(7, 10);
 
   CHECK_FALSE(tree.IsEmpty());
 
@@ -71,88 +91,110 @@ TEST_CASE("CartesianTree::Insert") {
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 8, 0);
+  check_key_value(check_node, 7, 10);
 
   // 1
-  tree.Insert(3, 1);
+  tree.Insert(4, 6);
 
   check_node = tree.root()->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 3, 1);
+  check_key_value(check_node, 4, 6);
 
   // 2
-  tree.Insert(10, 2);
+  tree.Insert(13, 8);
 
   check_node = tree.root()->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 10, 2);
+  check_key_value(check_node, 13, 8);
 
   // 3
-  tree.Insert(1, 3);
+  tree.Insert(2, 4);
 
   check_node = tree.root()->left->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 1, 3);
+  check_key_value(check_node, 2, 4);
 
   // 4
-  tree.Insert(6, 4);
+  tree.Insert(6, 2);
 
   check_node = tree.root()->left->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 6, 4);
+  check_key_value(check_node, 6, 2);
+
+  // 5
+  tree.Insert(9, 7);
+
+  check_node = tree.root()->right->left;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 9, 7);
 
   // 6
-  tree.Insert(14, 6);
+  tree.Insert(14, 4);
 
   check_node = tree.root()->right->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 14, 6);
+  check_key_value(check_node, 14, 4);
+
+  // 7
+  tree.Insert(0, 3);
+
+  check_node = tree.root()->left->left->left;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 0, 3);
+
+  // 8
+  tree.Insert(3, 3);
+
+  check_node = tree.root()->left->left->right;
+
+  REQUIRE(check_node != nullptr);
+  check_children_null(check_node);
+  check_key_value(check_node, 3, 3);
 
   // 9
-  tree.Insert(4, 9);
+  tree.Insert(5, 1);
 
   check_node = tree.root()->left->right->left;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 4, 9);
+  check_key_value(check_node, 5, 1);
 
   // 10
-  tree.Insert(7, 10);
+  tree.Insert(11, 3);
 
-  check_node = tree.root()->left->right->right;
-
-  REQUIRE(check_node != nullptr);
-  check_children_null(check_node);
-  check_key_value(check_node, 7, 10);
-
-  // 13
-  tree.Insert(13, 13);
-
-  check_node = tree.root()->right->right->left;
+  check_node = tree.root()->right->left->right;
 
   REQUIRE(check_node != nullptr);
   check_children_null(check_node);
-  check_key_value(check_node, 13, 13);
+  check_key_value(check_node, 11, 3);
+
+
+
 
   // check nullptr nodes
-  CHECK(tree.root()->right->left == nullptr);
+  CHECK(tree.root()->left->right->right == nullptr);
+  CHECK(tree.root()->right->left->left == nullptr);
+  CHECK(tree.root()->right->right->left == nullptr);
   CHECK(tree.root()->right->right->right == nullptr);
-  check_children_null(tree.root()->left->left);
 
   // check tree's string representation (BFS)
   const auto tree_str = utils::tree_as_str(tree.root());
-  CHECK_THAT(tree_str, Contains("8 3 10 1 6 14 4 7 13"));
+  CHECK_THAT(tree_str, Contains("7 4 13 2 6 9 14 0 3 5 11"));
 }
 
 TEST_CASE("CartesianTree::Contains") {
@@ -182,11 +224,11 @@ TEST_CASE("CartesianTree::Contains") {
   }
 }
 
-TEST_CASE("CertasianTree::Remove") {
+TEST_CASE("CartesianTree::Remove") {
   CartesianTree tree;
 
-  auto keys = std::vector<int>{8, 3, 10, 1, 6, 14, 4, 7, 13};
-  const auto values = std::vector<int>{0, 1, 2, 3, 4, 6, 9, 10, 13};
+  auto keys = std::vector<int>{7, 4, 13, 2, 6, 9, 14, 0, 3, 5, 11};
+  const auto values = std::vector<int>{10, 6, 8, 4, 2, 7, 4, 3, 3, 1, 3};
 
   for (int index = 0; index < keys.size(); ++index) {
     tree.Insert(keys[index], values[index]);
@@ -196,7 +238,7 @@ TEST_CASE("CertasianTree::Remove") {
   REQUIRE(tree.root() != nullptr);
 
   SECTION("remove nodes with no children") {
-    const int remove_key = GENERATE(1, 4, 7, 13);
+    const int remove_key = GENERATE(3, 5, 11, 14);
 
     keys.erase(std::remove(keys.begin(), keys.end(), remove_key), keys.end());
 
@@ -219,25 +261,61 @@ TEST_CASE("CertasianTree::Remove") {
   SECTION("remove nodes with one child") {
 
     SECTION("remove node with left child") {
-      const int remove_key = 14;
+      const int remove_key = 6;
 
       CHECK(tree.Remove(remove_key));
       CHECK_FALSE(tree.Contains(remove_key));
 
       // check tree's string representation (BFS)
       const auto tree_str = utils::tree_as_str(tree.root());
-      CHECK_THAT(tree_str, Contains("8 3 10 1 6 13 4 7"));
+      CHECK_THAT(tree_str, Contains("7 4 13 2 5 9 14 0 3 11"));
     }
 
     SECTION("remove node with right child") {
-      const int remove_key = 10;
+      const int remove_key = 9;
 
       CHECK(tree.Remove(remove_key));
       CHECK_FALSE(tree.Contains(remove_key));
 
       // check tree's string representation (BFS)
       const auto tree_str = utils::tree_as_str(tree.root());
-      CHECK_THAT(tree_str, Contains("8 3 14 1 6 13 4 7"));
+      CHECK_THAT(tree_str, Contains("7 4 13 2 6 11 14 0 3 5"));
+    }
+  }
+
+  SECTION("remove node with 2 children") {
+
+    SECTION("remove node 4") {
+      const int remove_key = 4;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("7 2 13 0 3 9 14 6 11 5"));
+    }
+
+    SECTION("remove node 13") {
+      const int remove_key = 13;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("7 4 9 2 6 14 0 3 5 11"));
+    }
+
+    SECTION("remove node 7") {
+      const int remove_key = 7;
+
+      CHECK(tree.Remove(remove_key));
+      CHECK_FALSE(tree.Contains(remove_key));
+
+      // check tree's string representation (BFS)
+      const auto tree_str = utils::tree_as_str(tree.root());
+      CHECK_THAT(tree_str, Contains("13 9 14 4 11 2 6 0 3 5"));
     }
   }
 }
