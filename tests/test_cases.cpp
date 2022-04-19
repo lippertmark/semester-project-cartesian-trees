@@ -90,12 +90,13 @@ TEST_CASE("CartesianTree::Merge") {
   for (int index = 0; index < keys_r.size(); ++index) {
     right_tree.Insert(keys_r[index], values_r[index]);
   }
+  CartesianTree tree;
   SECTION("merge trees") {
-    right_tree.Merge(left_tree.root(), right_tree.root());
+    Node* elem = tree.Merge(left_tree.root(), right_tree.root());
     REQUIRE_FALSE(right_tree.IsEmpty());
-    REQUIRE(right_tree.root() != nullptr);
-    const auto right_tree1 = utils::tree_as_str(right_tree.root());
-    CHECK_THAT(right_tree1, Contains("13 7 14 4 10 1 6 8 3"));
+    REQUIRE(elem != nullptr);
+    const auto right_tree1 = utils::tree_as_str(elem);
+    CHECK_THAT(elem, Contains("13 7 14 4 10 1 6 8 3 "));
   }
 }
 
