@@ -84,8 +84,6 @@ namespace assignment {
   bool CartesianTree::Remove(int key) {
     root_ = remove(root_, key);
     return root_;
-    //root_ = Merge(root_, left_tree);
-    //root_ = Merge(right_tree, root_);
   }
 
   bool CartesianTree::IsEmpty() const {
@@ -129,4 +127,4 @@ namespace assignment {
   }
 
 
-}  // namespace assignment
+}  

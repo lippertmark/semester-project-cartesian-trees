@@ -31,6 +31,7 @@ namespace assignment {
 
     Node* root() const;
 
+
    private:
     // корневой узел
     Node* root_{nullptr};
