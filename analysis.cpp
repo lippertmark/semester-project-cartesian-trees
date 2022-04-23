@@ -71,13 +71,13 @@ void decorator_insert_n_items(int n) {
 //}
 
 
-int key[100000000];
-int value[100000000];
+
 
 void decorator_contains_one_item() {
   int n = 50000000;
   CartesianTree tree;
-
+  int key[1000000];
+  int value[1000000];
   for (int i = 0; i < n; ++i) {
     key[i] = i + 1;
     value[i] = rand() % n;
@@ -95,7 +95,8 @@ void decorator_contains_one_item() {
     }
   }
 }
-
+int key[100000000];
+int value[100000000];
 void decorator_remove_one_item() {
   int n = 10000000;
   CartesianTree tree;
