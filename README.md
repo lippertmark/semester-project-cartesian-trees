@@ -49,14 +49,18 @@ _Декартово дерево - структура данных, объеди
 git clone --recurse-submodules https://github.com/lippertmark/semester-project-cartesian-trees.git
 ```
 Сборка и запуск проекта осуществляется через среду разработки.
+_Откройте проект, запустите файл src/cartesian_tree.cpp для просмотра работы декартового дерева._
 
+_Запустите tests/tests_cases.cpp для проверки правильности работы кода._
+
+_Чтобы запустить демонстрационный пример откройте main.cpp_
+
+####Контрольные тесты (data)
+_Для запуска анализа времени работы программы нужно запустить analysis.cpp_
 #### Генерация тестовых данных
 
 _Формат данных: [txt](https://ru.wikipedia.org/wiki/%D0%A2%D0%B5%D0%BA%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D0%B9_%D1%84%D0%B0%D0%B9%D0%BB)._
 _Данные генерируются с помощью функций rand() и shuffle()_
-#### Контрольные тесты (data)
-
-_Для запуска контрольных тестов необходимо предварительно сгенерировать или скачать готовый набор тестовых данных._
 
 ##### Список контрольных тестов
 
@@ -65,8 +69,17 @@ _Для запуска контрольных тестов необходимо 
 | `decorator_insert_n_items`     | добавление элементов | _время_ |
 | `decorator_contains_one_item`  | запрос Contains      | _время_ |
 | `decorator_remove_one_item`    | удаление элемента    | _время_ |
+
 _Результаты измерений представлены в файлах insert_time.txt, contains_time.txt, remove_time.txt_
 
+![img.png](image/img.png)
+_decorator_insert_n_items_
+
+![img1.png](image/img1.png)
+_decorator_contains_one_item_
+
+![img2.png](image/img2.png)
+_decorator_remove_one_item_
 ## Источники
 
 _Список использованных при реализации структуры данных источников._
